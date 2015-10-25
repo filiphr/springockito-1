@@ -2,7 +2,7 @@ package org.kubek2k.springockito.annotations.internal;
 
 import org.kubek2k.springockito.annotations.internal.definitions.SpringockitoDefinition;
 import org.kubek2k.springockito.annotations.internal.definitions.bean.SpringockitoBeanDefinition;
-import org.springframework.context.support.GenericApplicationContext;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 
 public class Loader {
 
@@ -13,7 +13,7 @@ public class Loader {
         this.definitionRegistry.registerAll(springockitoDefinitionFinder.findSpringockitoDefinitions(clazz));
     }
 
-    public void registerMocksAndSpies(GenericApplicationContext context) {
+    public void registerMocksAndSpies(BeanDefinitionRegistry context) {
         for (SpringockitoDefinition springockitoDefinition : definitionRegistry.getRegistered()) {
             SpringockitoBeanDefinition beanDefinition = springockitoDefinition.createSpringockitoBeanDefinition();
             context.registerBeanDefinition(beanDefinition.getSpringBeanName(), beanDefinition.getSpringBeanDefinition());
