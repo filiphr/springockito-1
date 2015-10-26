@@ -1,27 +1,23 @@
 package org.kubek2k.springockito.annotations.experimental.boot.spring;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.Ordered;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.support.AbstractTestExecutionListener;
 
 /**
+ * {@link org.springframework.test.context.TestExecutionListener} that sets the test class into a System variable
+ * to be used by the {@link SpringockitoBeanRegistryFactoryPostProcessor}. It is really important that
+ * the {@link SpringockitoBeanRegistryFactoryPostProcessor} bean is created by the application context.
+ *
  * @author Filip Hrisafov
  */
 public class SpringockitoTestExecutionListener extends AbstractTestExecutionListener implements Ordered {
 
-  public static final String TEST_SYSTEM_PROPERTY = "springockito.testing.class";
-
   @Override
   public void beforeTestClass(TestContext testContext) throws Exception {
     super.beforeTestClass(testContext);
-    System.getProperties().setProperty(TEST_SYSTEM_PROPERTY, testContext.getTestClass().getName());
-  }
 
-  @Override
-  public void prepareTestInstance(TestContext testContext) throws Exception {
-    super.prepareTestInstance(testContext);
+    System.getProperties().setProperty(SpringockitoBeanRegistryFactoryPostProcessor.SPRINGOCKITO_TESTING_CLASS, testContext.getTestClass().getName());
   }
 
   public int getOrder() {
